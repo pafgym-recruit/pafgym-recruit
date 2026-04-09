@@ -342,9 +342,9 @@
   }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script>emailjs.init("CgTiXhOEEgHm-QKlf");</script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 <script>pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";</script>
+<script>emailjs.init("CgTiXhOEEgHm-QKlf");</script>
 </head>
 <body>
 
@@ -362,8 +362,8 @@
 </div>
 
 <div class="form-outer">
-  <form id="main-form" name="pafgym-seed" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onsubmit="handleSubmit(event)" novalidate>
-    <input type="hidden" name="form-name" value="pafgym-seed">
+  <form id="main-form" name="pafgym-application" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onsubmit="handleSubmit(event)" novalidate>
+    <input type="hidden" name="form-name" value="pafgym-application">
     <input type="hidden" name="bot-field" style="display:none;">
     <input type="hidden" name="age" id="hidden-age" value="">
     <input type="hidden" name="sports_fields" id="hidden-sports" value="">
@@ -381,25 +381,15 @@
             <div class="apply-field-card" onclick="selectField(this, 'PERSONAL TRAINER')">
               <div class="apply-field-icon">
                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <!-- 바벨 바 -->
-  <line x1="4" y1="12" x2="20" y2="12"/>
-  <!-- 왼쪽 원판 -->
-  <rect x="2" y="9" width="3" height="6" rx="1"/>
-  <!-- 오른쪽 원판 -->
-  <rect x="19" y="9" width="3" height="6" rx="1"/>
-  <!-- 손 (그립) -->
-  <line x1="7" y1="12" x2="7" y2="12"/>
-  <line x1="17" y1="12" x2="17" y2="12"/>
-  <!-- 사람 머리 -->
-  <circle cx="12" cy="4" r="2"/>
-  <!-- 몸통 - 들어올리는 자세 -->
-  <path d="M12 6v3"/>
-  <!-- 팔 - 바벨 잡기 -->
-  <path d="M7 12 Q9 9 12 9 Q15 9 17 12"/>
-  <!-- 다리 -->
-  <path d="M10 14 L9 19"/>
-  <path d="M14 14 L15 19"/>
-</svg>
+                  <line x1="4" y1="12" x2="20" y2="12"/>
+                  <rect x="2" y="9" width="3" height="6" rx="1"/>
+                  <rect x="19" y="9" width="3" height="6" rx="1"/>
+                  <circle cx="12" cy="4" r="2"/>
+                  <path d="M12 6v3"/>
+                  <path d="M7 12 Q9 9 12 9 Q15 9 17 12"/>
+                  <path d="M10 14 L9 19"/>
+                  <path d="M14 14 L15 19"/>
+                </svg>
               </div>
               <div class="apply-field-title">PERSONAL TRAINER</div>
               <div class="apply-field-sub">퍼스널 트레이너</div>
@@ -407,22 +397,15 @@
             <div class="apply-field-card" onclick="selectField(this, 'PILATES INSTRUCTOR')">
               <div class="apply-field-icon">
                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <!-- 머리 -->
-  <circle cx="12" cy="3.5" r="1.8"/>
-  <!-- 몸통 (누운 자세) -->
-  <line x1="6" y1="12" x2="16" y2="12"/>
-  <!-- 다리 들어올리기 -->
-  <path d="M16 12 L20 7"/>
-  <!-- 발 -->
-  <line x1="20" y1="7" x2="21" y2="8"/>
-  <!-- 반대 다리 -->
-  <path d="M6 12 L4 15"/>
-  <!-- 상체/머리 연결 -->
-  <path d="M12 5.3 Q12 8 10 10 Q8 11 6 12"/>
-  <!-- 팔 뻗기 -->
-  <path d="M10 10 L7 8"/>
-  <path d="M14 10 L17 8.5"/>
-</svg>
+                  <circle cx="12" cy="3.5" r="1.8"/>
+                  <line x1="6" y1="12" x2="16" y2="12"/>
+                  <path d="M16 12 L20 7"/>
+                  <line x1="20" y1="7" x2="21" y2="8"/>
+                  <path d="M6 12 L4 15"/>
+                  <path d="M12 5.3 Q12 8 10 10 Q8 11 6 12"/>
+                  <path d="M10 10 L7 8"/>
+                  <path d="M14 10 L17 8.5"/>
+                </svg>
               </div>
               <div class="apply-field-title">PILATES INSTRUCTOR</div>
               <div class="apply-field-sub">필라테스 강사</div>
@@ -430,27 +413,21 @@
             <div class="apply-field-card" onclick="selectField(this, 'PAFGYM SEED')">
               <div class="apply-field-icon">
                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <!-- 머리 -->
-  <circle cx="12" cy="7" r="2.2"/>
-  <!-- 학사모 (모자 챙) -->
-  <polygon points="12,2 21,6.5 12,11 3,6.5"/>
-  <!-- 학사모 윗면 -->
-  <line x1="12" y1="2" x2="12" y2="4.5"/>
-  <!-- 술 (tassel) -->
-  <line x1="21" y1="6.5" x2="21" y2="10"/>
-  <line x1="21" y1="10" x2="20" y2="12"/>
-  <!-- 몸통 -->
-  <path d="M8 21v-3a4 4 0 0 1 8 0v3"/>
-  <!-- 졸업장/책 -->
-  <rect x="9" y="14" width="6" height="4" rx="1"/>
-  <line x1="11" y1="16" x2="13" y2="16"/>
-</svg>
+                  <circle cx="12" cy="7" r="2.2"/>
+                  <polygon points="12,2 21,6.5 12,11 3,6.5"/>
+                  <line x1="12" y1="2" x2="12" y2="4.5"/>
+                  <line x1="21" y1="6.5" x2="21" y2="10"/>
+                  <line x1="21" y1="10" x2="20" y2="12"/>
+                  <path d="M8 21v-3a4 4 0 0 1 8 0v3"/>
+                  <rect x="9" y="14" width="6" height="4" rx="1"/>
+                  <line x1="11" y1="16" x2="13" y2="16"/>
+                </svg>
               </div>
               <div class="apply-field-title">PAFGYM SEED</div>
               <div class="apply-field-sub">씨드 프로그램</div>
             </div>
           </div>
-          <input type="hidden" name="apply_field" id="apply-field-value" required>
+          <input type="hidden" name="apply_field" id="apply-field-value">
         </div>
       </div>
     </div>
@@ -513,10 +490,10 @@
       </div>
     </div>
 
-    <!-- 3. 학력 -->
+    <!-- 2. 학력 -->
     <div class="form-section">
       <div class="section-label">
-        <div class="section-num">3</div>
+        <div class="section-num">2</div>
         <div class="section-title-text">학력</div>
       </div>
       <div class="section-body">
@@ -550,7 +527,7 @@
           <div class="card-item">
             <div class="g2" style="margin-bottom:10px;">
               <div class="field"><label>자격증명</label><input type="text" name="cert_name_1" placeholder="예) 생활스포츠지도사 2급"></div>
-              <div class="field"><label>취득 연도</label><input type="text" name="cert_year_1" placeholder="YYYY년"></div>
+              <div class="field"><label>취득 일자</label><input type="month" name="cert_year_1"></div>
             </div>
             <div class="field" style="margin-bottom:10px;"><label>발급 기관</label><input type="text" name="cert_org_1" placeholder="기관명"></div>
             <div class="field"><label>자격증 구분</label>
@@ -568,7 +545,7 @@
           <div class="card-item">
             <div class="g2" style="margin-bottom:10px;">
               <div class="field"><label>수료증명 / 과정명</label><input type="text" name="comp_name_1" placeholder="예) 스포츠 재활 전문가 과정"></div>
-              <div class="field"><label>수료 연도</label><input type="text" name="comp_year_1" placeholder="YYYY년"></div>
+              <div class="field"><label>수료 일자</label><input type="month" name="comp_year_1"></div>
             </div>
             <div class="field"><label>발급 기관 / 주관</label><input type="text" name="comp_org_1" placeholder="기관명"></div>
           </div>
@@ -628,9 +605,9 @@
       <div class="section-body">
         <div class="g1">
           <div class="field"><label>자기소개<span class="req">*</span></label><textarea name="intro" style="min-height:110px;" placeholder="본인의 성격, 가치관, 트레이너로서의 철학 등을 소개해 주세요 (300자 이내 권장)" required></textarea></div>
-          <div class="field"><label>지원 동기<span class="req">*</span></label><textarea name="motivation" style="min-height:110px;" placeholder="PAFGYM SEED 프로그램에 지원하게 된 계기와 이유를 작성해 주세요 (300자 이내 권장)" required></textarea></div>
+          <div class="field"><label>지원 동기<span class="req">*</span></label><textarea name="motivation" style="min-height:110px;" placeholder="PAFGYM에 지원하게 된 계기와 이유를 작성해 주세요 (300자 이내 권장)" required></textarea></div>
           <div class="field"><label>본인의 장점 및 단점<span class="req">*</span></label><textarea name="strengths" style="min-height:110px;" placeholder="업무 또는 트레이닝 관점에서의 강점과 개선하고자 하는 단점을 솔직하게 작성해 주세요" required></textarea></div>
-          <div class="field"><label>각오 및 포부<span class="req">*</span></label><textarea name="aspiration" style="min-height:110px;" placeholder="PAFGYM SEED 프로그램을 통해 이루고자 하는 목표와 비전을 작성해 주세요" required></textarea></div>
+          <div class="field"><label>각오 및 포부<span class="req">*</span></label><textarea name="aspiration" style="min-height:110px;" placeholder="PAFGYM에서 이루고자 하는 목표와 함께하고 싶은 방향을 작성해 주세요" required></textarea></div>
         </div>
       </div>
     </div>
@@ -639,20 +616,20 @@
     <div class="form-section">
       <div class="section-label">
         <div class="section-num">7</div>
-        <div class="section-title-text">교수님 추천서</div>
+        <div class="section-title-text">교수님 추천서 <span style="font-size:12px;font-weight:400;color:#e85a2b;background:#fff0ec;border:1px solid #f5c4b3;border-radius:20px;padding:2px 10px;margin-left:6px;letter-spacing:0;">PAFGYM SEED 만 해당</span></div>
       </div>
       <div class="section-body">
         <div class="g1">
           <div class="field">
-            <label>추천 교수님 성함<span class="req">*</span></label>
-            <input type="text" name="prof_name" placeholder="예) 홍길동 교수님" required>
+            <label>추천 교수님 성함</label>
+            <input type="text" name="prof_name" placeholder="예) 홍길동 교수님">
           </div>
           <div class="field">
-            <label>소속 학교 / 학과<span class="req">*</span></label>
-            <input type="text" name="prof_dept" placeholder="예) OO대학교 스포츠과학과" required>
+            <label>소속 학교 / 학과</label>
+            <input type="text" name="prof_dept" placeholder="예) OO대학교 스포츠과학과">
           </div>
           <div class="field">
-            <label>추천서 파일 업로드<span class="req">*</span></label>
+            <label>추천서 파일 업로드</label>
             <div class="photo-upload-wrap" id="rec-wrap" onclick="document.getElementById('rec-input').click()">
               <div class="photo-preview" id="rec-preview">
                 <div class="photo-placeholder">
@@ -661,9 +638,9 @@
                   <div class="photo-placeholder-sub">JPG, PNG, PDF · 10MB 이하</div>
                 </div>
               </div>
-              <input type="file" id="rec-input" name="recommendation" accept="image/jpeg,image/png,image/jpg,application/pdf" style="display:none;" onchange="previewRec(this)" required>
+              <input type="file" id="rec-input" name="recommendation" accept="image/jpeg,image/png,image/jpg,application/pdf" style="display:none;" onchange="previewRec(this)">
             </div>
-            <span class="hint">이미지(JPG/PNG) 또는 PDF 파일로 업로드해 주세요</span>
+            <span class="hint">이미지(JPG/PNG) 또는 PDF 파일로 업로드해 주세요 · PAFGYM SEED 지원자만 업로드해 주세요</span>
           </div>
         </div>
       </div>
@@ -743,37 +720,27 @@
   }
 
   let recBase64 = '';
-  let recReady = false;   // 변환 완료 플래그
+  let recReady = false;
 
   function setRecPreview(base64) {
     recBase64 = base64;
     recReady = true;
     const preview = document.getElementById("rec-preview");
+    if (!preview) return;
     preview.innerHTML = `<img src="${base64}" alt="추천서 미리보기" style="width:100%;max-height:320px;object-fit:contain;display:block;background:#f2f2f0;"><div class="photo-change-btn">파일 변경하기</div>`;
     preview.querySelector(".photo-change-btn").onclick = function(ev) {
       ev.stopPropagation();
       document.getElementById("rec-input").click();
     };
-    // 변환 완료 표시
-    const wrap = document.getElementById("rec-wrap");
-    wrap.style.borderColor = '#111';
   }
 
   function previewRec(input) {
     if (!input.files || !input.files[0]) return;
     const file = input.files[0];
-    if (file.size > 10 * 1024 * 1024) {
-      alert("파일 크기는 10MB 이하여야 합니다.");
-      input.value = "";
-      return;
-    }
-    recReady = false;
-    recBase64 = '';
-
-    // 변환 중 표시
+    if (file.size > 10 * 1024 * 1024) { alert("파일 크기는 10MB 이하여야 합니다."); input.value = ""; return; }
+    recReady = false; recBase64 = '';
     const preview = document.getElementById("rec-preview");
-    preview.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;gap:10px;"><div style="font-size:13px;color:#666;">변환 중...</div></div>`;
-
+    preview.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;padding:2rem;font-size:13px;color:#666;">변환 중...</div>`;
     const isPDF = file.type === 'application/pdf';
     if (isPDF) {
       const reader = new FileReader();
@@ -783,11 +750,9 @@
           pdf.getPage(1).then(function(page) {
             const viewport = page.getViewport({ scale: 2.0 });
             const canvas = document.createElement('canvas');
-            canvas.width = viewport.width;
-            canvas.height = viewport.height;
+            canvas.width = viewport.width; canvas.height = viewport.height;
             page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport }).promise.then(function() {
-              const MAX = 1200;
-              const out = document.createElement('canvas');
+              const MAX = 1200, out = document.createElement('canvas');
               let w = canvas.width, h = canvas.height;
               if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
               out.width = w; out.height = h;
@@ -795,19 +760,11 @@
               setRecPreview(out.toDataURL('image/jpeg', 0.8));
             });
           });
-        }).catch(function(err) {
-          console.error('PDF 변환 오류:', err);
-          alert("PDF 변환에 실패했습니다. JPG 또는 PNG 파일로 업로드해 주세요.");
-          input.value = "";
-          recReady = false;
-          preview.innerHTML = `<div class="photo-placeholder"><div class="photo-placeholder-text">클릭하여 추천서 업로드</div></div>`;
-        });
+        }).catch(function() { alert("PDF 변환 실패. JPG 또는 PNG로 업로드해 주세요."); input.value = ""; recReady = false; });
       };
       reader.readAsDataURL(file);
     } else {
-      compressImageForRec(file, function(compressed) {
-        setRecPreview(compressed);
-      });
+      compressImageForRec(file, function(compressed) { setRecPreview(compressed); });
     }
   }
 
@@ -816,13 +773,11 @@
     reader.onload = function(e) {
       const img = new Image();
       img.onload = function() {
-        const canvas = document.createElement('canvas');
-        const MAX = 1200;
+        const MAX = 1200, canvas = document.createElement('canvas');
         let w = img.width, h = img.height;
         if (w > h) { if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; } }
         else { if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; } }
-        canvas.width = w;
-        canvas.height = h;
+        canvas.width = w; canvas.height = h;
         canvas.getContext('2d').drawImage(img, 0, 0, w, h);
         callback(canvas.toDataURL('image/jpeg', 0.75));
       };
@@ -906,7 +861,7 @@
       <button type="button" class="del-btn" onclick="this.parentElement.remove()">x</button>
       <div class="g2" style="margin-bottom:10px;">
         <div class="field"><label>자격증명</label><input type="text" name="cert_name_${n}" placeholder="예) 생활스포츠지도사 2급"></div>
-        <div class="field"><label>취득 연도</label><input type="text" name="cert_year_${n}" placeholder="YYYY년"></div>
+        <div class="field"><label>취득 일자</label><input type="month" name="cert_year_${n}"></div>
       </div>
       <div class="field" style="margin-bottom:10px;"><label>발급 기관</label><input type="text" name="cert_org_${n}" placeholder="기관명"></div>
       <div class="field"><label>자격증 구분</label>
@@ -923,7 +878,7 @@
       <button type="button" class="del-btn" onclick="this.parentElement.remove()">x</button>
       <div class="g2" style="margin-bottom:10px;">
         <div class="field"><label>수료증명 / 과정명</label><input type="text" name="comp_name_${n}" placeholder="예) 스포츠 재활 전문가 과정"></div>
-        <div class="field"><label>수료 연도</label><input type="text" name="comp_year_${n}" placeholder="YYYY년"></div>
+        <div class="field"><label>수료 일자</label><input type="month" name="comp_year_${n}"></div>
       </div>
       <div class="field"><label>발급 기관 / 주관</label><input type="text" name="comp_org_${n}" placeholder="기관명"></div>
     </div>`;
@@ -1054,9 +1009,7 @@
 
   function handleSubmit(e) {
     e.preventDefault();
-
-    // 1. 일반 필드 유효성 검사 (file input 제외)
-    const required = document.querySelectorAll('[required]:not([type="file"])');
+    const required = document.querySelectorAll('[required]');
     let valid = true, firstInvalid = null;
     required.forEach(el => {
       if (!el.value.trim()) {
@@ -1072,34 +1025,10 @@
       return;
     }
 
-    // 2. 지원분야 확인
     if (!document.getElementById('apply-field-value').value) {
       const wrap = document.getElementById('apply-field-wrap');
-      wrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (wrap) wrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
       alert('지원 분야를 선택해 주세요.');
-      return;
-    }
-
-    // 3. 증명사진 확인
-    if (!photoBase64) {
-      const photoWrap = document.getElementById('photo-wrap');
-      photoWrap.style.borderColor = '#e85a2b';
-      photoWrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      alert('증명사진을 업로드해 주세요.');
-      return;
-    }
-
-    // 4. 추천서 변환 완료 확인
-    const recInput = document.getElementById('rec-input');
-    if (!recInput.files || !recInput.files[0]) {
-      const recWrap = document.getElementById('rec-wrap');
-      recWrap.style.borderColor = '#e85a2b';
-      recWrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      alert('교수님 추천서를 업로드해 주세요.');
-      return;
-    }
-    if (!recReady) {
-      alert('추천서 파일 변환 중입니다. 잠시 후 다시 시도해 주세요.');
       return;
     }
 
@@ -1127,19 +1056,19 @@
       motivation:     document.querySelector('[name="motivation"]')?.value || '',
       strengths:      document.querySelector('[name="strengths"]')?.value || '',
       aspiration:     document.querySelector('[name="aspiration"]')?.value || '',
-      photo:          photoBase64 ? `<img src="${photoBase64}" width="150" style="border-radius:6px;border:1px solid #e5e5e2;display:block;" alt="증명사진">` : '<span style="color:#aaa;">사진 없음</span>',
-      prof_name:      document.querySelector('[name="prof_name"]')?.value || '',
-      prof_dept:      document.querySelector('[name="prof_dept"]')?.value || '',
+      prof_name:      document.querySelector('[name="prof_name"]')?.value || '해당 없음',
+      prof_dept:      document.querySelector('[name="prof_dept"]')?.value || '해당 없음',
       recommendation: recBase64
         ? `<img src="${recBase64}" style="max-width:100%;border-radius:6px;border:1px solid #e5e5e2;display:block;" alt="추천서">`
-        : '<span style="color:#aaa;">파일 없음</span>',
+        : '<span style="color:#aaa;">해당 없음 (PAFGYM SEED 지원자만 제출)</span>',
+      photo:          photoBase64 ? `<img src="${photoBase64}" width="150" style="border-radius:6px;border:1px solid #e5e5e2;display:block;" alt="증명사진">` : '<span style="color:#aaa;">사진 없음</span>',
     };
 
     const btn = document.querySelector('.submit-btn');
     btn.textContent = '제출 중...';
     btn.disabled = true;
 
-    function doSend(params, attempt) {
+    function doSend(params) {
       emailjs.send('service_ziwdvfh', 'template_dm53yna', params)
         .then(() => {
           document.getElementById('success-overlay').classList.add('show');
@@ -1147,18 +1076,22 @@
           btn.disabled = false;
         })
         .catch((err) => {
-          console.error('EmailJS error (attempt ' + attempt + '):', err);
-          if (attempt === 1 && params.recommendation && params.recommendation.length > 100) {
-            console.warn('추천서 제외 후 재시도...');
-            const p2 = Object.assign({}, params, { recommendation: '<span style="color:#aaa;">추천서 파일이 용량 초과로 제외됐습니다. 별도 공유 부탁드립니다.</span>' });
-            doSend(p2, 2);
-          } else if (attempt <= 2 && params.photo && params.photo.length > 100) {
+          console.error('EmailJS error:', err);
+          if (params.photo && params.photo.length > 100) {
             console.warn('사진 제외 후 재시도...');
-            const p3 = Object.assign({}, params, {
-              photo: '<span style="color:#aaa;">증명사진 용량 초과로 제외됐습니다. 별도 공유 부탁드립니다.</span>',
-              recommendation: '<span style="color:#aaa;">추천서 용량 초과로 제외됐습니다. 별도 공유 부탁드립니다.</span>'
-            });
-            doSend(p3, 3);
+            const fallback = Object.assign({}, params, { photo: '<span style="color:#aaa;">사진은 용량 초과로 제외됐습니다. 별도로 공유 부탁드립니다.</span>' });
+            emailjs.send('service_ziwdvfh', 'template_dm53yna', fallback)
+              .then(() => {
+                document.getElementById('success-overlay').classList.add('show');
+                btn.textContent = '지원서 제출하기';
+                btn.disabled = false;
+              })
+              .catch((err2) => {
+                console.error('재시도 실패:', err2);
+                alert('제출 중 오류가 발생했습니다. 다시 시도해 주세요.');
+                btn.textContent = '지원서 제출하기';
+                btn.disabled = false;
+              });
           } else {
             alert('제출 중 오류가 발생했습니다. 다시 시도해 주세요.');
             btn.textContent = '지원서 제출하기';
@@ -1166,7 +1099,7 @@
           }
         });
     }
-    doSend(templateParams, 1);
+    doSend(templateParams);
   }
 
   function closeSuccess() {
@@ -1175,10 +1108,12 @@
     document.getElementById('age-out').textContent = '생년월일 입력 시 자동 계산';
     document.getElementById('age-out').classList.remove('filled');
     document.querySelectorAll('.tag.active').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.apply-field-card').forEach(c => c.classList.remove('selected'));
+    const afv = document.getElementById('apply-field-value'); if(afv) afv.value = '';
     document.getElementById('photo-preview').innerHTML = `<div class="photo-placeholder"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:#aaaaaa;margin-bottom:8px;display:block;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><div class="photo-placeholder-text">클릭하여 사진 업로드</div><div class="photo-placeholder-sub">JPG, PNG · 5MB 이하 · 증명사진 규격 권장</div></div>`;
     photoBase64 = '';
     recBase64 = ''; recReady = false;
-    document.getElementById('rec-preview').innerHTML = `<div class="photo-placeholder"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:#aaaaaa;margin-bottom:8px;display:block;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg><div class="photo-placeholder-text">클릭하여 추천서 업로드</div><div class="photo-placeholder-sub">JPG, PNG, PDF · 10MB 이하</div></div>`;
+    const rp = document.getElementById('rec-preview'); if(rp) rp.innerHTML = '<div class="photo-placeholder"><div class="photo-placeholder-text">클릭하여 추천서 업로드</div><div class="photo-placeholder-sub">JPG, PNG, PDF · 10MB 이하</div></div>';
     eduCount = 1; certCount = 1; compCount = 1; careerCount = 1;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
