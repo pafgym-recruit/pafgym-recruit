@@ -340,6 +340,198 @@
     .form-outer { padding: 2rem 1rem 4rem; }
     .section-body { padding: 1.25rem; }
   }
+
+  /* ── Preview Button ── */
+  .preview-btn {
+    background: var(--white); color: var(--black);
+    border: 2px solid var(--black); padding: 15px 40px;
+    border-radius: var(--radius-md);
+    font-size: 15px; font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer; font-weight: 700; letter-spacing: 1px;
+    transition: background 0.2s, color 0.2s;
+    margin-right: 12px;
+  }
+  .preview-btn:hover { background: var(--black); color: var(--white); }
+
+  /* ── Preview Modal ── */
+  .preview-modal {
+    display: none;
+    position: fixed; inset: 0; z-index: 600;
+    background: rgba(17,17,17,0.92);
+    overflow-y: auto;
+    padding: 2rem 1rem 3rem;
+  }
+  .preview-modal.show { display: block; }
+  .preview-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+  }
+  .preview-topbar {
+    background: var(--black);
+    color: var(--white);
+    padding: 1.25rem 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .preview-topbar-left {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .preview-topbar-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; letter-spacing: 3px;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .preview-topbar-sub {
+    font-size: 12px; color: var(--gray-400); letter-spacing: 1px;
+  }
+  .preview-actions {
+    display: flex; gap: 10px; align-items: center;
+  }
+  .preview-pdf-btn {
+    background: var(--accent); color: #fff;
+    border: none; padding: 9px 22px;
+    border-radius: var(--radius-sm);
+    font-size: 13px; font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer; font-weight: 700; letter-spacing: 0.5px;
+    transition: background 0.2s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .preview-pdf-btn:hover { background: var(--accent-dark); }
+  .preview-close-btn {
+    background: rgba(255,255,255,0.1); color: var(--white);
+    border: 1px solid rgba(255,255,255,0.2); padding: 9px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 13px; font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer; font-weight: 500;
+    transition: background 0.2s;
+  }
+  .preview-close-btn:hover { background: rgba(255,255,255,0.2); }
+  .preview-doc {
+    padding: 2.5rem 2.5rem 3rem;
+  }
+  .preview-doc-header {
+    text-align: center;
+    border-bottom: 2px solid var(--black);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .preview-doc-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px; letter-spacing: 4px;
+    margin-bottom: 6px;
+  }
+  .preview-doc-field-badge {
+    display: inline-block;
+    background: var(--black); color: #fff;
+    padding: 5px 20px; border-radius: 20px;
+    font-size: 13px; font-weight: 700; letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .preview-doc-date {
+    font-size: 12px; color: var(--gray-400); letter-spacing: 0.5px;
+  }
+  .preview-section {
+    margin-bottom: 1.75rem;
+  }
+  .preview-section-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--gray-400);
+    border-bottom: 1px solid var(--gray-200);
+    padding-bottom: 6px; margin-bottom: 12px;
+  }
+  .preview-row {
+    display: flex; gap: 12px;
+    font-size: 13px; padding: 5px 0;
+    border-bottom: 1px solid #f2f2f0;
+    line-height: 1.6;
+  }
+  .preview-row:last-child { border-bottom: none; }
+  .preview-row-label {
+    width: 110px; flex-shrink: 0;
+    color: var(--gray-600); font-weight: 500;
+  }
+  .preview-row-val {
+    color: var(--black); flex: 1; word-break: break-word;
+  }
+  .preview-card {
+    background: var(--gray-100);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+  .preview-card:last-child { margin-bottom: 0; }
+  .preview-card-title {
+    font-weight: 700; color: var(--black);
+    margin-bottom: 6px; font-size: 13px;
+  }
+  .preview-card-sub {
+    color: var(--gray-600); font-size: 12px;
+    line-height: 1.7;
+  }
+  .preview-textarea-val {
+    white-space: pre-wrap;
+    line-height: 1.8;
+    font-size: 13px;
+    color: var(--black);
+    background: var(--gray-100);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    border: 1px solid var(--gray-200);
+  }
+  .preview-photo {
+    width: 120px; border-radius: var(--radius-sm);
+    border: 1px solid var(--gray-200);
+    display: block;
+  }
+  .preview-tag-list {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;
+  }
+  .preview-tag {
+    background: var(--black); color: #fff;
+    padding: 4px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 500;
+  }
+  .preview-none {
+    font-size: 13px; color: var(--gray-400); font-style: italic;
+  }
+  .preview-notice {
+    margin-top: 2rem;
+    background: #fff8f6;
+    border: 1px solid #f5c4b3;
+    border-radius: var(--radius-md);
+    padding: 14px 18px;
+    font-size: 12px; color: var(--gray-600); line-height: 1.8;
+    text-align: center;
+  }
+  .preview-notice strong { color: var(--accent); }
+
+  /* ── Print styles ── */
+  @media print {
+    .site-header, .progress-bar, .hero, .form-outer, .success-overlay { display: none !important; }
+    .preview-modal {
+      display: block !important;
+      position: static !important;
+      background: none !important;
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+    .preview-inner {
+      box-shadow: none !important;
+      border-radius: 0 !important;
+    }
+    .preview-topbar { display: none !important; }
+    .preview-doc { padding: 1rem 1.5rem 2rem !important; }
+    .preview-notice { display: none !important; }
+    .preview-modal.show { display: block !important; }
+  }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
@@ -647,11 +839,34 @@
     </div>
 
     <div class="submit-area">
+      <button type="button" class="preview-btn" onclick="showPreview()">📋 미리보기 / PDF 저장</button>
       <button type="submit" class="submit-btn">지원서 제출하기</button>
-      <div class="submit-note">제출 전 모든 항목을 다시 한번 확인해 주세요</div>
+      <div class="submit-note">제출 전 미리보기로 내용을 확인하고 제출하세요</div>
     </div>
 
   </form>
+</div>
+
+<!-- Preview Modal -->
+<div class="preview-modal" id="preview-modal">
+  <div class="preview-inner">
+    <div class="preview-topbar">
+      <div class="preview-topbar-left">
+        <div class="preview-topbar-logo"><div class="logo-dot"></div>PAFGYM</div>
+        <div class="preview-topbar-sub">지원서 미리보기</div>
+      </div>
+      <div class="preview-actions">
+        <button class="preview-pdf-btn" onclick="savePDF()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          PDF 저장
+        </button>
+        <button class="preview-close-btn" onclick="closePreview()">✕ 닫기</button>
+      </div>
+    </div>
+    <div class="preview-doc" id="preview-doc">
+      <!-- JS로 채워짐 -->
+    </div>
+  </div>
 </div>
 
 <!-- Success overlay -->
@@ -669,6 +884,17 @@
 </div>
 
 <script>
+  // ESC key closes preview modal
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePreview();
+  });
+
+  // Click outside preview-inner to close
+  document.addEventListener('click', (e) => {
+    const modal = document.getElementById('preview-modal');
+    if (modal && modal.classList.contains('show') && e.target === modal) closePreview();
+  });
+
   // Progress bar
   window.addEventListener('scroll', () => {
     const doc = document.documentElement;
@@ -749,13 +975,13 @@
     reader.onload = function(e) {
       const img = new Image();
       img.onload = function() {
-        const MAX = 800, canvas = document.createElement('canvas');
+        const MAX = 1200, canvas = document.createElement('canvas');
         let w = img.width, h = img.height;
         if (w > h) { if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; } }
         else { if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; } }
         canvas.width = w; canvas.height = h;
         canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-        callback(canvas.toDataURL('image/jpeg', 0.5));
+        callback(canvas.toDataURL('image/jpeg', 0.75));
       };
       img.src = e.target.result;
     };
@@ -1044,40 +1270,276 @@
     btn.textContent = '제출 중...';
     btn.disabled = true;
 
-    function onSuccess() {
-      document.getElementById('success-overlay').classList.add('show');
-      btn.textContent = '지원서 제출하기';
-      btn.disabled = false;
-    }
-    function onFinalError() {
-      alert('제출 중 오류가 발생했습니다. 다시 시도해 주세요.');
-      btn.textContent = '지원서 제출하기';
-      btn.disabled = false;
-    }
-
-    // 1차: 전체 데이터 전송
-    emailjs.send('service_ziwdvfh', 'template_dm53yna', templateParams)
-      .then(onSuccess)
-      .catch(() => {
-        console.warn('1차 실패 → 추천서 제외 후 재시도');
-        // 2차: 추천서 제외
-        const fallback1 = Object.assign({}, templateParams, {
-          recommendation: '<span style="color:#aaa;">추천서는 용량 초과로 제외됐습니다. 별도로 공유 부탁드립니다.</span>'
+    function doSend(params) {
+      emailjs.send('service_ziwdvfh', 'template_dm53yna', params)
+        .then(() => {
+          document.getElementById('success-overlay').classList.add('show');
+          btn.textContent = '지원서 제출하기';
+          btn.disabled = false;
+        })
+        .catch((err) => {
+          console.error('EmailJS error:', err);
+          if (params.photo && params.photo.length > 100) {
+            console.warn('사진 제외 후 재시도...');
+            const fallback = Object.assign({}, params, { photo: '<span style="color:#aaa;">사진은 용량 초과로 제외됐습니다. 별도로 공유 부탁드립니다.</span>' });
+            emailjs.send('service_ziwdvfh', 'template_dm53yna', fallback)
+              .then(() => {
+                document.getElementById('success-overlay').classList.add('show');
+                btn.textContent = '지원서 제출하기';
+                btn.disabled = false;
+              })
+              .catch((err2) => {
+                console.error('재시도 실패:', err2);
+                alert('제출 중 오류가 발생했습니다. 다시 시도해 주세요.');
+                btn.textContent = '지원서 제출하기';
+                btn.disabled = false;
+              });
+          } else {
+            alert('제출 중 오류가 발생했습니다. 다시 시도해 주세요.');
+            btn.textContent = '지원서 제출하기';
+            btn.disabled = false;
+          }
         });
-        emailjs.send('service_ziwdvfh', 'template_dm53yna', fallback1)
-          .then(onSuccess)
-          .catch(() => {
-            console.warn('2차 실패 → 사진+추천서 모두 제외 후 재시도');
-            // 3차: 사진 + 추천서 모두 제외
-            const fallback2 = Object.assign({}, templateParams, {
-              photo: '<span style="color:#aaa;">사진은 용량 초과로 제외됐습니다. 별도로 공유 부탁드립니다.</span>',
-              recommendation: '<span style="color:#aaa;">추천서는 용량 초과로 제외됐습니다. 별도로 공유 부탁드립니다.</span>'
-            });
-            emailjs.send('service_ziwdvfh', 'template_dm53yna', fallback2)
-              .then(onSuccess)
-              .catch(onFinalError);
-          });
-      });
+    }
+    doSend(templateParams);
+  }
+
+  /* ── Preview & PDF ── */
+  function showPreview() {
+    const doc = buildPreviewDoc();
+    document.getElementById('preview-doc').innerHTML = doc;
+    document.getElementById('preview-modal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePreview() {
+    document.getElementById('preview-modal').classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  function savePDF() {
+    document.body.style.overflow = '';
+    window.print();
+  }
+
+  function esc(v) {
+    if (!v) return '';
+    return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function row(label, val) {
+    const v = (val || '').toString().trim();
+    return `<div class="preview-row">
+      <span class="preview-row-label">${label}</span>
+      <span class="preview-row-val">${v ? esc(v) : '<span class="preview-none">미입력</span>'}</span>
+    </div>`;
+  }
+
+  function buildPreviewDoc() {
+    const today = new Date().toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric' });
+    const applyField = document.getElementById('apply-field-value')?.value || '';
+    const name     = document.querySelector('[name="name"]')?.value || '';
+    const gender   = document.querySelector('[name="gender"]')?.value || '';
+    const dob      = document.querySelector('[name="dob"]')?.value || '';
+    const age      = document.getElementById('age-out')?.textContent || '';
+    const phone    = document.querySelector('[name="phone"]')?.value || '';
+    const email    = document.querySelector('[name="email"]')?.value || '';
+    const address  = document.querySelector('[name="address"]')?.value || '';
+    const height   = document.querySelector('[name="height"]')?.value || '';
+    const weight   = document.querySelector('[name="weight"]')?.value || '';
+    const sns      = document.querySelector('[name="sns"]')?.value || '';
+    const intro    = document.querySelector('[name="intro"]')?.value || '';
+    const motivation = document.querySelector('[name="motivation"]')?.value || '';
+    const strengths  = document.querySelector('[name="strengths"]')?.value || '';
+    const aspiration = document.querySelector('[name="aspiration"]')?.value || '';
+    const profName   = document.querySelector('[name="prof_name"]')?.value || '';
+    const profDept   = document.querySelector('[name="prof_dept"]')?.value || '';
+
+    // Photo
+    const photoHtml = photoBase64
+      ? `<img src="${photoBase64}" class="preview-photo" alt="증명사진">`
+      : '<span class="preview-none">업로드 없음</span>';
+
+    // Sports tags
+    const activeTags = [...document.querySelectorAll('.tag.active')].map(t => t.textContent.trim());
+    const tagsHtml = activeTags.length
+      ? `<div class="preview-tag-list">${activeTags.map(t=>`<span class="preview-tag">${esc(t)}</span>`).join('')}</div>`
+      : '<span class="preview-none">선택 없음</span>';
+
+    // Education
+    let eduHtml = '';
+    let ei = 1;
+    while (document.querySelector(`[name="edu_school_${ei}"]`)) {
+      const school  = document.querySelector(`[name="edu_school_${ei}"]`)?.value || '';
+      const degree  = document.querySelector(`[name="edu_degree_${ei}"]`)?.value || '';
+      const status  = document.querySelector(`[name="edu_status_${ei}"]`)?.value || '';
+      const major   = document.querySelector(`[name="edu_major_${ei}"]`)?.value  || '';
+      const estart  = document.querySelector(`[name="edu_start_${ei}"]`)?.value  || '';
+      const eend    = document.querySelector(`[name="edu_end_${ei}"]`)?.value    || '';
+      if (school || degree || major) {
+        eduHtml += `<div class="preview-card">
+          <div class="preview-card-title">${esc(school) || '학교명 미입력'}</div>
+          <div class="preview-card-sub">
+            ${[degree, status].filter(Boolean).join(' · ') || '학위/상태 미입력'}&nbsp;&nbsp;|&nbsp;&nbsp;${esc(major) || '전공 미입력'}<br>
+            ${estart || '-'} ~ ${eend || '-'}
+          </div>
+        </div>`;
+      }
+      ei++;
+    }
+    if (!eduHtml) eduHtml = '<span class="preview-none">입력 없음</span>';
+
+    // Certifications
+    let certHtml = '';
+    let ci = 1;
+    while (document.querySelector(`[name="cert_name_${ci}"]`)) {
+      const cname = document.querySelector(`[name="cert_name_${ci}"]`)?.value || '';
+      const cyear = document.querySelector(`[name="cert_year_${ci}"]`)?.value || '';
+      const corg  = document.querySelector(`[name="cert_org_${ci}"]`)?.value  || '';
+      const ctypeEl = document.querySelector(`[name="cert_type_${ci}"]:checked`);
+      const ctype = ctypeEl ? ctypeEl.value : '';
+      if (cname || corg) {
+        certHtml += `<div class="preview-card">
+          <div class="preview-card-title">${esc(cname) || '자격증명 미입력'}</div>
+          <div class="preview-card-sub">
+            ${esc(corg) || '기관 미입력'}${cyear ? ' · ' + cyear : ''}${ctype ? ' · ' + esc(ctype) : ''}
+          </div>
+        </div>`;
+      }
+      ci++;
+    }
+    if (!certHtml) certHtml = '<span class="preview-none">입력 없음</span>';
+
+    // Completions
+    let compHtml = '';
+    let oi = 1;
+    while (document.querySelector(`[name="comp_name_${oi}"]`)) {
+      const oname = document.querySelector(`[name="comp_name_${oi}"]`)?.value || '';
+      const oyear = document.querySelector(`[name="comp_year_${oi}"]`)?.value || '';
+      const oorg  = document.querySelector(`[name="comp_org_${oi}"]`)?.value  || '';
+      if (oname || oorg) {
+        compHtml += `<div class="preview-card">
+          <div class="preview-card-title">${esc(oname) || '과정명 미입력'}</div>
+          <div class="preview-card-sub">${esc(oorg) || '기관 미입력'}${oyear ? ' · ' + oyear : ''}</div>
+        </div>`;
+      }
+      oi++;
+    }
+    if (!compHtml) compHtml = '<span class="preview-none">입력 없음</span>';
+
+    // Careers
+    let careerHtml = '';
+    let ri = 1;
+    while (document.querySelector(`[name="career_company_${ri}"]`)) {
+      const company  = document.querySelector(`[name="career_company_${ri}"]`)?.value  || '';
+      const position = document.querySelector(`[name="career_position_${ri}"]`)?.value || '';
+      const cstart   = document.querySelector(`[name="career_start_${ri}"]`)?.value    || '';
+      const cend     = document.querySelector(`[name="career_end_${ri}"]`)?.value      || '';
+      const cdesc    = document.querySelector(`[name="career_desc_${ri}"]`)?.value     || '';
+      if (company || position) {
+        const dur = calcMonths(cstart, cend);
+        careerHtml += `<div class="preview-card">
+          <div class="preview-card-title">${esc(company) || '근무처 미입력'} <span style="font-weight:400;color:var(--gray-600)">${esc(position)}</span></div>
+          <div class="preview-card-sub">
+            ${cstart || '-'} ~ ${cend || '현재'} (${dur})<br>
+            ${cdesc ? esc(cdesc) : '<em>업무내용 미입력</em>'}
+          </div>
+        </div>`;
+      }
+      ri++;
+    }
+    if (!careerHtml) careerHtml = '<span class="preview-none">입력 없음</span>';
+
+    // Recommendation
+    const recHtml = recBase64
+      ? `<img src="${recBase64}" style="max-width:100%;border-radius:6px;border:1px solid var(--gray-200);display:block;" alt="추천서">`
+      : '<span class="preview-none">업로드 없음 (PAFGYM SEED 지원자만 해당)</span>';
+
+    return `
+      <div class="preview-doc-header">
+        <div class="preview-doc-title">PAFGYM 지원서</div>
+        ${applyField ? `<div class="preview-doc-field-badge">${esc(applyField)}</div>` : ''}
+        <div class="preview-doc-date">작성 확인일: ${today}</div>
+      </div>
+
+      <div class="preview-section">
+        <div class="preview-section-title">기본 인적사항</div>
+        <div style="display:flex;gap:20px;align-items:flex-start;">
+          <div style="flex:1;">
+            ${row('이름', name)}
+            ${row('성별', gender)}
+            ${row('생년월일', dob ? dob + ' (' + age + ')' : '')}
+            ${row('연락처', phone)}
+            ${row('이메일', email)}
+            ${row('거주지', address)}
+            ${row('키 / 몸무게', (height ? height + ' cm' : '') + (height && weight ? ' / ' : '') + (weight ? weight + ' kg' : ''))}
+            ${row('SNS / 포트폴리오', sns)}
+          </div>
+          <div style="flex-shrink:0;text-align:center;">
+            <div style="font-size:11px;color:var(--gray-400);margin-bottom:6px;">증명사진</div>
+            ${photoHtml}
+          </div>
+        </div>
+      </div>
+
+      <div class="preview-section">
+        <div class="preview-section-title">학력</div>
+        ${eduHtml}
+      </div>
+
+      <div class="preview-section">
+        <div class="preview-section-title">자격증</div>
+        ${certHtml}
+      </div>
+
+      <div class="preview-section">
+        <div class="preview-section-title">수료증</div>
+        ${compHtml}
+      </div>
+
+      <div class="preview-section">
+        <div class="preview-section-title">경력 — 주요 분야</div>
+        ${tagsHtml}
+      </div>
+
+      <div class="preview-section">
+        <div class="preview-section-title">경력 사항</div>
+        ${careerHtml}
+      </div>
+
+      <div class="preview-section">
+        <div class="preview-section-title">자기소개</div>
+        ${intro ? `<div class="preview-textarea-val">${esc(intro)}</div>` : '<span class="preview-none">미입력</span>'}
+      </div>
+
+      <div class="preview-section">
+        <div class="preview-section-title">지원 동기</div>
+        ${motivation ? `<div class="preview-textarea-val">${esc(motivation)}</div>` : '<span class="preview-none">미입력</span>'}
+      </div>
+
+      <div class="preview-section">
+        <div class="preview-section-title">장점 및 단점</div>
+        ${strengths ? `<div class="preview-textarea-val">${esc(strengths)}</div>` : '<span class="preview-none">미입력</span>'}
+      </div>
+
+      <div class="preview-section">
+        <div class="preview-section-title">각오 및 포부</div>
+        ${aspiration ? `<div class="preview-textarea-val">${esc(aspiration)}</div>` : '<span class="preview-none">미입력</span>'}
+      </div>
+
+      ${(profName || profDept || recBase64) ? `
+      <div class="preview-section">
+        <div class="preview-section-title">교수님 추천서 (PAFGYM SEED)</div>
+        ${row('교수님 성함', profName)}
+        ${row('소속', profDept)}
+        <div style="margin-top:12px;">${recHtml}</div>
+      </div>` : ''}
+
+      <div class="preview-notice">
+        <strong>제출 전 최종 확인</strong>하세요. 위 내용이 정확하면 창을 닫고 <strong>지원서 제출하기</strong>를 눌러주세요.<br>
+        <strong>PDF 저장</strong>은 상단의 [PDF 저장] 버튼을 클릭하세요.
+      </div>
+    `;
   }
 
   function closeSuccess() {
