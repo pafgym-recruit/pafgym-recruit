@@ -1264,6 +1264,7 @@
         ? `<img src="${recBase64}" style="max-width:100%;border-radius:6px;border:1px solid #e5e5e2;display:block;" alt="추천서">`
         : '<span style="color:#aaa;">해당 없음 (PAFGYM SEED 지원자만 제출)</span>',
       photo:          photoBase64 ? `<img src="${photoBase64}" width="150" style="border-radius:6px;border:1px solid #e5e5e2;display:block;" alt="증명사진">` : '<span style="color:#aaa;">사진 없음</span>',
+      preview_doc:    buildEmailPreviewHTML(),
     };
 
     const btn = document.querySelector('.submit-btn');
@@ -1302,6 +1303,230 @@
         });
     }
     doSend(templateParams);
+  }
+
+  /* ── Email Preview HTML (인라인 스타일, 이메일 호환) ── */
+  function buildEmailPreviewHTML() {
+    const today = new Date().toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric' });
+    const applyField = document.getElementById('apply-field-value')?.value || '';
+    const name      = document.querySelector('[name="name"]')?.value || '';
+    const gender    = document.querySelector('[name="gender"]')?.value || '';
+    const dob       = document.querySelector('[name="dob"]')?.value || '';
+    const age       = document.getElementById('age-out')?.textContent || '';
+    const phone     = document.querySelector('[name="phone"]')?.value || '';
+    const email     = document.querySelector('[name="email"]')?.value || '';
+    const address   = document.querySelector('[name="address"]')?.value || '';
+    const height    = document.querySelector('[name="height"]')?.value || '';
+    const weight    = document.querySelector('[name="weight"]')?.value || '';
+    const sns       = document.querySelector('[name="sns"]')?.value || '';
+    const intro     = document.querySelector('[name="intro"]')?.value || '';
+    const motivation= document.querySelector('[name="motivation"]')?.value || '';
+    const strengths = document.querySelector('[name="strengths"]')?.value || '';
+    const aspiration= document.querySelector('[name="aspiration"]')?.value || '';
+    const profName  = document.querySelector('[name="prof_name"]')?.value || '';
+    const profDept  = document.querySelector('[name="prof_dept"]')?.value || '';
+
+    function erow(label, val) {
+      const v = (val||'').toString().trim();
+      return `<tr>
+        <td style="padding:7px 12px;color:#666;font-size:13px;width:130px;vertical-align:top;border-bottom:1px solid #f0f0f0;">${label}</td>
+        <td style="padding:7px 12px;color:#111;font-size:13px;vertical-align:top;border-bottom:1px solid #f0f0f0;">${v ? esc(v) : '<span style="color:#aaa;">미입력</span>'}</td>
+      </tr>`;
+    }
+
+    function esec(title) {
+      return `<tr><td colspan="2" style="padding:14px 12px 6px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#999;border-bottom:2px solid #eee;">${title}</td></tr>`;
+    }
+
+    function etextarea(label, val) {
+      const v = (val||'').toString().trim();
+      return `<tr>
+        <td colspan="2" style="padding:12px;">
+          <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">${label}</div>
+          <div style="background:#f8f8f8;border:1px solid #eee;border-radius:6px;padding:12px;font-size:13px;color:#111;line-height:1.8;white-space:pre-wrap;">${v ? esc(v) : '<span style="color:#aaa;">미입력</span>'}</div>
+        </td>
+      </tr>`;
+    }
+
+    // Sports tags
+    const activeTags = [...document.querySelectorAll('.tag.active')].map(t => t.textContent.trim());
+    const tagsHtml = activeTags.length
+      ? activeTags.map(t=>`<span style="display:inline-block;background:#111;color:#fff;padding:4px 12px;border-radius:20px;font-size:12px;margin:2px;">${esc(t)}</span>`).join(' ')
+      : '<span style="color:#aaa;font-size:13px;">선택 없음</span>';
+
+    // Education
+    let eduRows = '';
+    let ei = 1;
+    while (document.querySelector(`[name="edu_school_${ei}"]`)) {
+      const school = document.querySelector(`[name="edu_school_${ei}"]`)?.value || '';
+      const degree = document.querySelector(`[name="edu_degree_${ei}"]`)?.value || '';
+      const status = document.querySelector(`[name="edu_status_${ei}"]`)?.value || '';
+      const major  = document.querySelector(`[name="edu_major_${ei}"]`)?.value  || '';
+      const estart = document.querySelector(`[name="edu_start_${ei}"]`)?.value  || '';
+      const eend   = document.querySelector(`[name="edu_end_${ei}"]`)?.value    || '';
+      if (school || degree || major) {
+        eduRows += `<tr><td colspan="2" style="padding:8px 12px;border-bottom:1px solid #f0f0f0;">
+          <div style="font-size:13px;font-weight:700;color:#111;">${esc(school)||'학교명 미입력'}</div>
+          <div style="font-size:12px;color:#666;margin-top:3px;">${[degree,status].filter(Boolean).join(' · ')||'-'} &nbsp;|&nbsp; ${esc(major)||'전공 미입력'} &nbsp;|&nbsp; ${estart||'-'} ~ ${eend||'-'}</div>
+        </td></tr>`;
+      }
+      ei++;
+    }
+    if (!eduRows) eduRows = `<tr><td colspan="2" style="padding:8px 12px;color:#aaa;font-size:13px;">입력 없음</td></tr>`;
+
+    // Certifications
+    let certRows = '';
+    let ci = 1;
+    while (document.querySelector(`[name="cert_name_${ci}"]`)) {
+      const cname = document.querySelector(`[name="cert_name_${ci}"]`)?.value || '';
+      const cyear = document.querySelector(`[name="cert_year_${ci}"]`)?.value || '';
+      const corg  = document.querySelector(`[name="cert_org_${ci}"]`)?.value  || '';
+      const ctypeEl = document.querySelector(`[name="cert_type_${ci}"]:checked`);
+      const ctype = ctypeEl ? ctypeEl.value : '';
+      if (cname || corg) {
+        certRows += `<tr><td colspan="2" style="padding:8px 12px;border-bottom:1px solid #f0f0f0;">
+          <div style="font-size:13px;font-weight:700;color:#111;">${esc(cname)||'자격증명 미입력'}</div>
+          <div style="font-size:12px;color:#666;margin-top:3px;">${esc(corg)||'기관 미입력'}${cyear?' · '+cyear:''}${ctype?' · '+esc(ctype):''}</div>
+        </td></tr>`;
+      }
+      ci++;
+    }
+    if (!certRows) certRows = `<tr><td colspan="2" style="padding:8px 12px;color:#aaa;font-size:13px;">입력 없음</td></tr>`;
+
+    // Completions
+    let compRows = '';
+    let oi = 1;
+    while (document.querySelector(`[name="comp_name_${oi}"]`)) {
+      const oname = document.querySelector(`[name="comp_name_${oi}"]`)?.value || '';
+      const oyear = document.querySelector(`[name="comp_year_${oi}"]`)?.value || '';
+      const oorg  = document.querySelector(`[name="comp_org_${oi}"]`)?.value  || '';
+      if (oname || oorg) {
+        compRows += `<tr><td colspan="2" style="padding:8px 12px;border-bottom:1px solid #f0f0f0;">
+          <div style="font-size:13px;font-weight:700;color:#111;">${esc(oname)||'과정명 미입력'}</div>
+          <div style="font-size:12px;color:#666;margin-top:3px;">${esc(oorg)||'기관 미입력'}${oyear?' · '+oyear:''}</div>
+        </td></tr>`;
+      }
+      oi++;
+    }
+    if (!compRows) compRows = `<tr><td colspan="2" style="padding:8px 12px;color:#aaa;font-size:13px;">입력 없음</td></tr>`;
+
+    // Careers
+    let careerRows = '';
+    let ri = 1;
+    while (document.querySelector(`[name="career_company_${ri}"]`)) {
+      const company  = document.querySelector(`[name="career_company_${ri}"]`)?.value  || '';
+      const position = document.querySelector(`[name="career_position_${ri}"]`)?.value || '';
+      const cstart   = document.querySelector(`[name="career_start_${ri}"]`)?.value    || '';
+      const cend     = document.querySelector(`[name="career_end_${ri}"]`)?.value      || '';
+      const cdesc    = document.querySelector(`[name="career_desc_${ri}"]`)?.value     || '';
+      if (company || position) {
+        const dur = calcMonths(cstart, cend);
+        careerRows += `<tr><td colspan="2" style="padding:8px 12px;border-bottom:1px solid #f0f0f0;">
+          <div style="font-size:13px;font-weight:700;color:#111;">${esc(company)||'근무처 미입력'} <span style="font-weight:400;color:#666;">${esc(position)}</span></div>
+          <div style="font-size:12px;color:#666;margin-top:3px;">${cstart||'-'} ~ ${cend||'현재'} (${dur})</div>
+          ${cdesc?`<div style="font-size:12px;color:#444;margin-top:4px;white-space:pre-wrap;">${esc(cdesc)}</div>`:''}
+        </td></tr>`;
+      }
+      ri++;
+    }
+    if (!careerRows) careerRows = `<tr><td colspan="2" style="padding:8px 12px;color:#aaa;font-size:13px;">입력 없음</td></tr>`;
+
+    // Photo
+    const photoHtml = photoBase64
+      ? `<img src="${photoBase64}" width="120" style="border-radius:6px;border:1px solid #eee;display:block;" alt="증명사진">`
+      : '<span style="color:#aaa;font-size:12px;">업로드 없음</span>';
+
+    // Recommendation
+    const recHtml = recBase64
+      ? `<img src="${recBase64}" style="max-width:100%;border-radius:6px;border:1px solid #eee;display:block;" alt="추천서">`
+      : '<span style="color:#aaa;font-size:12px;">해당 없음</span>';
+
+    return `
+<div style="font-family:'Noto Sans KR',Arial,sans-serif;max-width:720px;margin:0 auto;background:#fff;border:1px solid #e5e5e2;border-radius:12px;overflow:hidden;">
+
+  <!-- 헤더 -->
+  <div style="background:#111;padding:24px 32px;display:flex;align-items:center;justify-content:space-between;">
+    <div style="color:#fff;font-size:22px;font-weight:900;letter-spacing:3px;">PAFGYM</div>
+    <div style="color:#aaa;font-size:11px;letter-spacing:2px;">NEW APPLICATION RECEIVED</div>
+  </div>
+
+  <!-- 타이틀 -->
+  <div style="text-align:center;padding:28px 32px 20px;border-bottom:2px solid #111;">
+    <div style="font-size:28px;font-weight:900;letter-spacing:3px;color:#111;margin-bottom:10px;">PAFGYM 지원서</div>
+    ${applyField?`<div style="display:inline-block;background:#111;color:#fff;padding:5px 20px;border-radius:20px;font-size:13px;font-weight:700;letter-spacing:1px;margin-bottom:8px;">${esc(applyField)}</div>`:''}
+    <div style="font-size:12px;color:#aaa;">접수일: ${today}</div>
+  </div>
+
+  <table style="width:100%;border-collapse:collapse;">
+
+    ${esec('기본 인적사항')}
+    <tr>
+      <td style="padding:12px;" colspan="2">
+        <table style="width:100%;">
+          <tr>
+            <td style="vertical-align:top;">
+              <table style="width:100%;border-collapse:collapse;">
+                ${erow('이름', name)}
+                ${erow('성별', gender)}
+                ${erow('생년월일', dob ? dob + ' (' + age + ')' : '')}
+                ${erow('연락처', phone)}
+                ${erow('이메일', email)}
+                ${erow('거주지', address)}
+                ${erow('키 / 몸무게', (height?height+'cm':'') + (height&&weight?' / ':'') + (weight?weight+'kg':''))}
+                ${erow('SNS / 포트폴리오', sns)}
+              </table>
+            </td>
+            <td style="width:140px;vertical-align:top;padding-left:16px;text-align:center;">
+              <div style="font-size:11px;color:#aaa;margin-bottom:6px;">증명사진</div>
+              ${photoHtml}
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    ${esec('학력')}
+    ${eduRows}
+
+    ${esec('자격증')}
+    ${certRows}
+
+    ${esec('수료증')}
+    ${compRows}
+
+    ${esec('주요 운동 / 업무 분야')}
+    <tr><td colspan="2" style="padding:10px 12px;">${tagsHtml}</td></tr>
+
+    ${esec('경력 사항')}
+    ${careerRows}
+
+    ${esec('자기소개')}
+    ${etextarea('', intro)}
+
+    ${esec('지원 동기')}
+    ${etextarea('', motivation)}
+
+    ${esec('장점 및 단점')}
+    ${etextarea('', strengths)}
+
+    ${esec('각오 및 포부')}
+    ${etextarea('', aspiration)}
+
+    ${(profName||profDept||recBase64)?`
+    ${esec('교수님 추천서 (PAFGYM SEED)')}
+    ${erow('교수님 성함', profName)}
+    ${erow('소속', profDept)}
+    <tr><td colspan="2" style="padding:12px;">${recHtml}</td></tr>
+    `:''}
+
+  </table>
+
+  <!-- 푸터 -->
+  <div style="background:#f8f8f8;padding:16px 32px;text-align:center;border-top:1px solid #eee;">
+    <div style="font-size:11px;color:#aaa;letter-spacing:1px;">PAFGYM · office@pafgym.com · pafgym-recruit.github.io/pafgym-recruit</div>
+  </div>
+
+</div>`;
   }
 
   /* ── Preview & PDF ── */
