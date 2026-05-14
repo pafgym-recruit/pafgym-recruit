@@ -904,24 +904,28 @@
   });
 
   // Age calc
-  let photoBase64 = '';
+  let photoBase64 = '';      // 프리뷰/PDF용 (400px)
+  let photoEmailBase64 = ''; // 이메일용 (100px, 고압축)
+
+  // 범용 Canvas 압축 함수
+  function compressToSize(dataUrl, maxW, maxH, quality, callback) {
+    const img = new Image();
+    img.onload = function() {
+      let w = img.width, h = img.height;
+      if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+      if (h > maxH) { w = Math.round(w * maxH / h); h = maxH; }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      callback(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.src = dataUrl;
+  }
 
   function compressImage(file, callback) {
     const reader = new FileReader();
     reader.onload = function(e) {
-      const img = new Image();
-      img.onload = function() {
-        const canvas = document.createElement('canvas');
-        const MAX = 400;
-        let w = img.width, h = img.height;
-        if (w > h) { if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; } }
-        else { if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; } }
-        canvas.width = w;
-        canvas.height = h;
-        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-        callback(canvas.toDataURL('image/jpeg', 0.7));
-      };
-      img.src = e.target.result;
+      compressToSize(e.target.result, 400, 9999, 0.7, callback);
     };
     reader.readAsDataURL(file);
   }
@@ -936,6 +940,10 @@
     }
     compressImage(file, function(compressed) {
       photoBase64 = compressed;
+      // 이메일용 추가 압축: 100px × 133px, quality 0.5
+      compressToSize(compressed, 100, 133, 0.5, function(small) {
+        photoEmailBase64 = small;
+      });
       const preview = document.getElementById("photo-preview");
       preview.innerHTML = `<img src="${compressed}" alt="증명사진 미리보기"><div class="photo-change-btn">사진 변경하기</div>`;
       preview.querySelector(".photo-change-btn").onclick = function(ev) {
@@ -945,12 +953,17 @@
     });
   }
 
-  let recBase64 = '';
+  let recBase64 = '';        // 프리뷰/PDF용 (1200px)
+  let recEmailBase64 = '';   // 이메일용 (480px, 고압축)
   let recReady = false;
 
   function setRecPreview(base64) {
     recBase64 = base64;
     recReady = true;
+    // 이메일용 추가 압축: 480px 너비, quality 0.5
+    compressToSize(base64, 480, 9999, 0.5, function(small) {
+      recEmailBase64 = small;
+    });
     const preview = document.getElementById("rec-preview");
     if (!preview) return;
     preview.innerHTML = `<img src="${base64}" alt="추천서 미리보기" style="width:100%;max-height:320px;object-fit:contain;display:block;background:#f2f2f0;"><div class="photo-change-btn">파일 변경하기</div>`;
@@ -964,7 +977,7 @@
     if (!input.files || !input.files[0]) return;
     const file = input.files[0];
     if (file.size > 10 * 1024 * 1024) { alert("파일 크기는 10MB 이하여야 합니다."); input.value = ""; return; }
-    recReady = false; recBase64 = '';
+    recReady = false; recBase64 = ''; recEmailBase64 = '';
     const preview = document.getElementById("rec-preview");
     preview.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;padding:2rem;font-size:13px;color:#666;">변환 중...</div>`;
     compressImageForRec(file, function(compressed) { setRecPreview(compressed); });
@@ -973,17 +986,7 @@
   function compressImageForRec(file, callback) {
     const reader = new FileReader();
     reader.onload = function(e) {
-      const img = new Image();
-      img.onload = function() {
-        const MAX = 1200, canvas = document.createElement('canvas');
-        let w = img.width, h = img.height;
-        if (w > h) { if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; } }
-        else { if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; } }
-        canvas.width = w; canvas.height = h;
-        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-        callback(canvas.toDataURL('image/jpeg', 0.75));
-      };
-      img.src = e.target.result;
+      compressToSize(e.target.result, 1200, 9999, 0.75, callback);
     };
     reader.readAsDataURL(file);
   }
@@ -1431,15 +1434,19 @@
     }
     if (!careerRows) careerRows = `<tr><td colspan="2" style="padding:8px 12px;color:#aaa;font-size:13px;">입력 없음</td></tr>`;
 
-    // Photo — base64 제외 (이메일 payload 용량 초과 방지)
-    const photoHtml = photoBase64
-      ? '<div style="width:120px;height:90px;background:#f0f0f0;border:1px solid #ddd;border-radius:6px;display:flex;align-items:center;justify-content:center;"><span style="font-size:11px;color:#555;text-align:center;line-height:1.4;">📷 증명사진<br>첨부됨</span></div>'
-      : '<span style="color:#aaa;font-size:12px;">업로드 없음</span>';
+    // Photo — 이메일용 소형 압축본 사용 (100px, ~3KB)
+    const photoHtml = photoEmailBase64
+      ? `<img src="${photoEmailBase64}" width="100" style="border-radius:6px;border:1px solid #eee;display:block;" alt="증명사진">`
+      : (photoBase64
+          ? `<img src="${photoBase64}" width="100" style="border-radius:6px;border:1px solid #eee;display:block;" alt="증명사진">`
+          : '<span style="color:#aaa;font-size:12px;">업로드 없음</span>');
 
-    // Recommendation — base64 제외 (이메일 payload 용량 초과 방지)
-    const recHtml = recBase64
-      ? '<div style="background:#f5f5f5;border:1px solid #ddd;border-radius:6px;padding:12px;font-size:13px;color:#555;">📎 추천서 파일이 첨부되었습니다.</div>'
-      : '<span style="color:#aaa;font-size:12px;">해당 없음</span>';
+    // Recommendation — 이메일용 소형 압축본 사용 (480px, ~15KB)
+    const recHtml = recEmailBase64
+      ? `<img src="${recEmailBase64}" style="max-width:100%;border-radius:6px;border:1px solid #eee;display:block;" alt="추천서">`
+      : (recBase64
+          ? `<img src="${recBase64}" style="max-width:100%;border-radius:6px;border:1px solid #eee;display:block;" alt="추천서">`
+          : '<span style="color:#aaa;font-size:12px;">해당 없음</span>');
 
     return `
 <div style="font-family:'Noto Sans KR',Arial,sans-serif;max-width:720px;margin:0 auto;background:#fff;border:1px solid #e5e5e2;border-radius:12px;overflow:hidden;">
@@ -1776,8 +1783,8 @@
     document.querySelectorAll('.apply-field-card').forEach(c => c.classList.remove('selected'));
     const afv = document.getElementById('apply-field-value'); if(afv) afv.value = '';
     document.getElementById('photo-preview').innerHTML = `<div class="photo-placeholder"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:#aaaaaa;margin-bottom:8px;display:block;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><div class="photo-placeholder-text">클릭하여 사진 업로드</div><div class="photo-placeholder-sub">JPG, PNG · 5MB 이하 · 증명사진 규격 권장</div></div>`;
-    photoBase64 = '';
-    recBase64 = ''; recReady = false;
+    photoBase64 = ''; photoEmailBase64 = '';
+    recBase64 = ''; recEmailBase64 = ''; recReady = false;
     const rp = document.getElementById('rec-preview'); if(rp) rp.innerHTML = '<div class="photo-placeholder"><div class="photo-placeholder-text">클릭하여 추천서 업로드</div><div class="photo-placeholder-sub">JPG, PNG · 10MB 이하</div></div>';
     eduCount = 1; certCount = 1; compCount = 1; careerCount = 1;
     window.scrollTo({ top: 0, behavior: 'smooth' });
