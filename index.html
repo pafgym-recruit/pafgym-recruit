@@ -1281,8 +1281,10 @@
           btn.disabled = false;
         })
         .catch((err) => {
-          console.error('EmailJS error:', err.status, err.text, JSON.stringify(err));
-          alert('제출 중 오류가 발생했습니다. 다시 시도해 주세요.');
+          const status = err?.status ?? '?';
+          const text   = err?.text   ?? JSON.stringify(err);
+          console.error('EmailJS error:', status, text);
+          alert(`제출 오류 (${status})\n${text}\n\n이 오류 내용을 캡처해서 관리자에게 전달해 주세요.`);
           btn.textContent = '지원서 제출하기';
           btn.disabled = false;
         });
@@ -1416,19 +1418,15 @@
     }
     if (!careerRows) careerRows = `<tr><td colspan="2" style="padding:8px 12px;color:#aaa;font-size:13px;">입력 없음</td></tr>`;
 
-    // Photo — 이메일용 소형 압축본 사용 (100px, ~3KB)
-    const photoHtml = photoEmailBase64
-      ? `<img src="${photoEmailBase64}" width="100" style="border-radius:6px;border:1px solid #eee;display:block;" alt="증명사진">`
-      : (photoBase64
-          ? `<img src="${photoBase64}" width="100" style="border-radius:6px;border:1px solid #eee;display:block;" alt="증명사진">`
-          : '<span style="color:#aaa;font-size:12px;">업로드 없음</span>');
+    // Photo — 이메일 페이로드 초과 방지: 이미지 직접 삽입 대신 텍스트 표시
+    const photoHtml = (photoEmailBase64 || photoBase64)
+      ? `<span style="display:inline-block;background:#e3f2fd;color:#1565c0;border:1px solid #90caf9;border-radius:6px;padding:8px 16px;font-size:13px;font-weight:700;">✓ 증명사진 첨부됨</span>`
+      : '<span style="color:#aaa;font-size:12px;">업로드 없음</span>';
 
-    // Recommendation — 이메일용 소형 압축본 사용 (480px, ~15KB)
-    const recHtml = recEmailBase64
-      ? `<img src="${recEmailBase64}" style="max-width:100%;border-radius:6px;border:1px solid #eee;display:block;" alt="추천서">`
-      : (recBase64
-          ? `<img src="${recBase64}" style="max-width:100%;border-radius:6px;border:1px solid #eee;display:block;" alt="추천서">`
-          : '<span style="color:#aaa;font-size:12px;">해당 없음</span>');
+    // Recommendation — 이메일 페이로드 초과 방지: 이미지 직접 삽입 대신 텍스트 표시
+    const recHtml = (recEmailBase64 || recBase64)
+      ? `<span style="display:inline-block;background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:6px;padding:8px 16px;font-size:13px;font-weight:700;">✓ 추천서 첨부됨 (이미지 업로드 완료)</span>`
+      : '<span style="color:#aaa;font-size:12px;">해당 없음</span>';
 
     return `
 <div style="font-family:'Noto Sans KR',Arial,sans-serif;max-width:720px;margin:0 auto;background:#fff;border:1px solid #e5e5e2;border-radius:12px;overflow:hidden;">
