@@ -1228,8 +1228,22 @@
       }
     });
     if (!valid) {
-      firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      firstInvalid.focus();
+      // 숨겨진 필수 항목(증명사진 file input 등)은 테두리/스크롤/포커스가 안 보이므로 별도 안내
+      const cs = getComputedStyle(firstInvalid);
+      const isHidden = firstInvalid.type === 'file' || cs.display === 'none' || cs.visibility === 'hidden';
+      if (isHidden) {
+        const wrap = document.getElementById('photo-wrap') || firstInvalid.closest('.field');
+        if (wrap) {
+          wrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          wrap.style.outline = '2px solid #e85a2b';
+          wrap.style.outlineOffset = '2px';
+          setTimeout(() => { wrap.style.outline = ''; }, 2500);
+        }
+        alert('증명사진을 첨부해 주세요. (필수 항목입니다)');
+      } else {
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstInvalid.focus();
+      }
       return;
     }
 
