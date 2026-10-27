@@ -297,6 +297,14 @@
   .apply-field-sub { font-size: 11px; color: var(--gray-600); }
   @media (max-width: 540px) { .apply-field-wrap { grid-template-columns: 1fr; } }
   .submit-area { margin-top: 3rem; text-align: center; }
+  .consent-box { background: #fff; border: 1px solid var(--gray-200, #e5e5e5); border-radius: 12px; padding: 18px 20px; margin: 0 0 18px; font-size: 13px; line-height: 1.7; color: #444; }
+  .consent-box h4 { margin: 0 0 8px; font-size: 14px; color: #1a1a1a; }
+  .consent-box ul { margin: 0 0 10px; padding-left: 18px; }
+  .consent-box li { margin: 2px 0; }
+  .consent-check { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; font-weight: 600; color: #1a1a1a; cursor: pointer; padding-top: 10px; border-top: 1px dashed #ddd; }
+  .consent-check input { width: 18px; height: 18px; margin: 3px 0 0; flex: none; accent-color: #e85a2b; }
+  .consent-box.invalid { border-color: #e85a2b; box-shadow: 0 0 0 3px rgba(232,90,43,.15); }
+  .upload-progress { font-size: 12px; color: #666; margin-top: 8px; min-height: 1.2em; }
   .submit-btn {
     background: var(--black); color: #fff;
     border: none; padding: 16px 56px;
@@ -841,10 +849,23 @@
       </div>
     </div>
 
+    <div class="consent-box" id="consent-box">
+      <h4>개인정보 수집·이용 동의 (필수)</h4>
+      <ul>
+        <li><strong>수집 항목</strong> 이름, 성별, 생년월일, 연락처, 이메일, 거주지, 키·몸무게, SNS, 증명사진, 학력·자격·경력, 자기소개, 추천서(SEED 지원자)</li>
+        <li><strong>수집 목적</strong> PAFGYM 채용 전형(서류 검토·면접 연락·합격 여부 안내)</li>
+        <li><strong>보유 기간</strong> 제출일로부터 180일(채용 종료 후 지체 없이 파기). 보관 중 반환·삭제를 원하시면 office@pafgym.com으로 요청하실 수 있습니다.</li>
+        <li><strong>보관 방식</strong> PAFGYM 채용 담당자만 열람하는 비공개 저장소(해외 클라우드 서버: Vercel·Cloudflare)에 저장되며, 제3자에게 제공하지 않습니다.</li>
+        <li>동의를 거부할 수 있으나, 거부 시 지원서 접수가 불가합니다.</li>
+      </ul>
+      <label class="consent-check"><input type="checkbox" id="consent-check"> 위 내용을 확인했으며 개인정보 수집·이용에 동의합니다.</label>
+    </div>
+
     <div class="submit-area">
       <button type="button" class="preview-btn" onclick="showPreview()">📋 미리보기 / PDF 저장</button>
       <button type="submit" class="submit-btn">지원서 제출하기</button>
       <div class="submit-note">제출 전 미리보기로 내용을 확인하고 제출하세요</div>
+      <div class="upload-progress" id="upload-progress"></div>
     </div>
 
   </form>
@@ -907,6 +928,10 @@
   });
 
   // Age calc
+  // 지원서 저장 서버(PAFGYM 채용 앱). 원본 사진·추천서는 이 서버가 발급한 서명 URL로 비공개 저장소에 그대로 올라가고, 담당자는 앱에서 원본 화질로 본다
+  const RECRUIT_API = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://localhost:3200' : 'https://pafgym-recruit.vercel.app';
+  let photoFile = null;      // 원본 파일(서버 저장용)
+  let recFile = null;
   let photoBase64 = '';      // 프리뷰/PDF용 (400px)
   let photoEmailBase64 = ''; // 이메일용 (100px, 고압축)
 
@@ -941,6 +966,7 @@
       input.value = "";
       return;
     }
+    photoFile = file;
     compressImage(file, function(compressed) {
       photoBase64 = compressed;
       // 이메일용 추가 압축: 100px × 133px, quality 0.5
@@ -980,7 +1006,7 @@
     if (!input.files || !input.files[0]) return;
     const file = input.files[0];
     if (file.size > 10 * 1024 * 1024) { alert("파일 크기는 10MB 이하여야 합니다."); input.value = ""; return; }
-    recReady = false; recBase64 = ''; recEmailBase64 = '';
+    recReady = false; recBase64 = ''; recEmailBase64 = ''; recFile = file;
     const preview = document.getElementById("rec-preview");
     preview.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;padding:2rem;font-size:13px;color:#666;">변환 중...</div>`;
     compressImageForRec(file, function(compressed) { setRecPreview(compressed); });
@@ -1254,6 +1280,15 @@
       return;
     }
 
+    const consentEl = document.getElementById('consent-check');
+    if (consentEl && !consentEl.checked) {
+      const box = document.getElementById('consent-box');
+      box.classList.add('invalid'); box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      consentEl.addEventListener('change', () => box.classList.remove('invalid'), { once: true });
+      alert('개인정보 수집·이용에 동의해 주세요. (필수 항목입니다)');
+      return;
+    }
+
     const sports = [...document.querySelectorAll('.tag.active')].map(t => t.textContent.trim()).join(', ') || '선택 없음';
     const age = document.getElementById('age-out').textContent.trim();
 
@@ -1287,26 +1322,93 @@
     };
 
     const btn = document.querySelector('.submit-btn');
+    const prog = document.getElementById('upload-progress');
     btn.textContent = '제출 중...';
     btn.disabled = true;
+    const finish = () => { btn.textContent = '지원서 제출하기'; btn.disabled = false; prog.textContent = ''; };
 
-    function doSend(params) {
-      emailjs.send('service_ziwdvfh', 'template_dm53yna', params)
-        .then(() => {
-          document.getElementById('success-overlay').classList.add('show');
-          btn.textContent = '지원서 제출하기';
-          btn.disabled = false;
-        })
-        .catch((err) => {
-          const status = err?.status ?? '?';
-          const text   = err?.text   ?? JSON.stringify(err);
-          console.error('EmailJS error:', status, text);
-          alert(`제출 오류 (${status})\n${text}\n\n이 오류 내용을 캡처해서 관리자에게 전달해 주세요.`);
-          btn.textContent = '지원서 제출하기';
-          btn.disabled = false;
-        });
+    // 1) 채용 앱에 저장(원본 파일 포함) → 2) 담당자 알림 메일(EmailJS). 저장이 실패해도 메일은 보내고, 메일 본문에 저장 상태를 남긴다
+    (async () => {
+      let saved = null, saveError = '';
+      try { saved = await saveToServer((msg) => { btn.textContent = msg; }); }
+      catch (err) { saveError = err?.message || String(err); console.error('저장 실패:', err); }
+      templateParams.save_status = saved ? `사이트 저장 완료 → ${saved.adminUrl}` : `사이트 저장 실패 (${saveError}) — 이 메일의 내용만 남아 있습니다`;
+      templateParams.admin_url = saved ? saved.adminUrl : '';
+      btn.textContent = '알림 보내는 중...';
+      try {
+        await emailjs.send('service_ziwdvfh', 'template_dm53yna', templateParams);
+      } catch (err) {
+        const status = err?.status ?? '?'; const text = err?.text ?? JSON.stringify(err);
+        console.error('EmailJS error:', status, text);
+        if (!saved) { alert(`제출 오류 (${status})\n${text}\n\n이 오류 내용을 캡처해서 관리자에게 전달해 주세요.`); finish(); return; }
+      }
+      finish();
+      document.getElementById('success-overlay').classList.add('show');
+    })();
+  }
+
+  /* ── 채용 앱 저장: 서명 URL 발급 → 원본 파일 업로드 → 본문 저장 ── */
+  async function postJson(path, body) {
+    const r = await fetch(RECRUIT_API + path, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error || `서버 오류 ${r.status}`);
+    return j;
+  }
+  function uploadWithProgress(file, target, onPct) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      if (target.mode === 'r2') { xhr.open('PUT', target.url); xhr.setRequestHeader('content-type', target.contentType); }
+      else { xhr.open('POST', RECRUIT_API + target.url); }
+      xhr.upload.onprogress = (e) => { if (e.lengthComputable) onPct(Math.round(e.loaded / e.total * 100)); };
+      xhr.onload = () => (xhr.status >= 200 && xhr.status < 300) ? resolve() : reject(new Error(`파일 업로드 실패 (${xhr.status})`));
+      xhr.onerror = () => reject(new Error('파일 업로드 실패 (네트워크)'));
+      xhr.timeout = 180000; xhr.ontimeout = () => reject(new Error('파일 업로드 시간 초과'));
+      if (target.mode === 'r2') xhr.send(file);
+      else { const fd = new FormData(); fd.append('key', target.key); fd.append('file', file, file.name); xhr.send(fd); }
+    });
+  }
+  function collectRows(prefix, keys, nameOf) {
+    const out = []; let i = 1;
+    while (document.querySelector(`[name="${nameOf(keys[0], i)}"]`)) {
+      const row = {};
+      for (const k of keys) {
+        const el = document.querySelector(`[name="${nameOf(k, i)}"]`) ;
+        if (k === 'type') { const c = document.querySelector(`[name="${nameOf(k, i)}"]:checked`); row[k] = c ? c.value : ''; }
+        else row[k] = el ? (el.value || '').trim() : '';
+      }
+      if (Object.values(row).some(Boolean)) out.push(row);
+      i++;
     }
-    doSend(templateParams);
+    return out;
+  }
+  async function saveToServer(setStep) {
+    if (!photoFile) throw new Error('증명사진 파일이 없습니다');
+    const val = (n) => (document.querySelector(`[name="${n}"]`)?.value || '').trim();
+    setStep('저장 준비 중...');
+    const files = [{ role: 'photo', name: photoFile.name, type: photoFile.type, size: photoFile.size }];
+    if (recFile) files.push({ role: 'rec', name: recFile.name, type: recFile.type, size: recFile.size });
+    const sign = await postJson('/api/apply/sign', { files });
+    const targets = Object.fromEntries(sign.files.map((f) => [f.role, { ...f, mode: sign.mode }]));
+    const prog = document.getElementById('upload-progress');
+    await uploadWithProgress(photoFile, targets.photo, (p) => { setStep(`사진 올리는 중 ${p}%`); prog.textContent = `증명사진 원본 업로드 ${p}%`; });
+    if (recFile) await uploadWithProgress(recFile, targets.rec, (p) => { setStep(`추천서 올리는 중 ${p}%`); prog.textContent = `추천서 원본 업로드 ${p}%`; });
+    setStep('지원서 저장 중...'); prog.textContent = '';
+    const body = {
+      id: sign.id, consent: !!document.getElementById('consent-check')?.checked,
+      field: document.getElementById('apply-field-value')?.value || '',
+      name: val('name'), gender: val('gender'), dob: val('dob'), age: document.getElementById('age-out')?.textContent.trim() || '',
+      phone: val('phone'), email: val('email'), address: val('address'), height: val('height'), weight: val('weight'), sns: val('sns'),
+      sports: [...document.querySelectorAll('.tag.active')].map(t => t.textContent.trim()),
+      education: collectRows('edu', ['school', 'degree', 'status', 'major', 'start', 'end'], (k, i) => `edu_${k}_${i}`),
+      certifications: collectRows('cert', ['name', 'year', 'org', 'type'], (k, i) => `cert_${k}_${i}`),
+      completions: collectRows('comp', ['name', 'year', 'org'], (k, i) => `comp_${k}_${i}`),
+      careers: collectRows('career', ['company', 'position', 'start', 'end', 'desc'], (k, i) => `career_${k}_${i}`),
+      intro: val('intro'), motivation: val('motivation'), strengths: val('strengths'), aspiration: val('aspiration'),
+      profName: val('prof_name'), profDept: val('prof_dept'),
+      photoPreview: photoBase64 && photoBase64.length <= 120000 ? photoBase64 : '',
+      files: { photo: { key: targets.photo.key, name: photoFile.name, type: photoFile.type, size: photoFile.size }, ...(recFile ? { rec: { key: targets.rec.key, name: recFile.name, type: recFile.type, size: recFile.size } } : {}) },
+    };
+    return postJson('/api/apply', body);
   }
 
   /* ── Email Preview HTML (인라인 스타일, 이메일 호환) ── */
@@ -1784,8 +1886,9 @@
     document.querySelectorAll('.apply-field-card').forEach(c => c.classList.remove('selected'));
     const afv = document.getElementById('apply-field-value'); if(afv) afv.value = '';
     document.getElementById('photo-preview').innerHTML = `<div class="photo-placeholder"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:#aaaaaa;margin-bottom:8px;display:block;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><div class="photo-placeholder-text">클릭하여 사진 업로드</div><div class="photo-placeholder-sub">JPG, PNG · 5MB 이하 · 증명사진 규격 권장</div></div>`;
-    photoBase64 = ''; photoEmailBase64 = '';
-    recBase64 = ''; recEmailBase64 = ''; recReady = false;
+    photoBase64 = ''; photoEmailBase64 = ''; photoFile = null;
+    recBase64 = ''; recEmailBase64 = ''; recReady = false; recFile = null;
+    const cc = document.getElementById('consent-check'); if (cc) cc.checked = false;
     const rp = document.getElementById('rec-preview'); if(rp) rp.innerHTML = '<div class="photo-placeholder"><div class="photo-placeholder-text">클릭하여 추천서 업로드</div><div class="photo-placeholder-sub">JPG, PNG · 10MB 이하</div></div>';
     eduCount = 1; certCount = 1; compCount = 1; careerCount = 1;
     window.scrollTo({ top: 0, behavior: 'smooth' });
