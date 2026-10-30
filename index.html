@@ -7,6 +7,16 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>PAFGYM 지원서</title>
+<script>
+  // 홈페이지 삽입(embed) 모드 — iframe 안에서 열리거나, 주소에 ?embed=1 이 있거나, <html data-embed>면 자체 머리글·히어로를 숨기고 부모 페이지에 높이를 알린다. ?embed=0 이면 강제로 끈다
+  (function () {
+    try {
+      if (/[?&]embed=0\b/.test(location.search)) return;
+      var byQuery = /[?&]embed=(1|true)\b/.test(location.search), inFrame = window.self !== window.top, byAttr = document.documentElement.hasAttribute('data-embed');
+      if (byQuery || inFrame || byAttr) document.documentElement.classList.add('embed');
+    } catch (e) { document.documentElement.classList.add('embed'); }
+  })();
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -543,6 +553,14 @@
     .preview-notice { display: none !important; }
     .preview-modal.show { display: block !important; }
   }
+
+  /* ── 홈페이지 삽입(embed) 모드: 머리글·히어로·진행 막대를 숨기고, 높이를 내용에 맞춘다(iframe 자동 높이) ── */
+  html.embed .site-header, html.embed .hero, html.embed .progress-bar { display: none; }
+  html.embed body { min-height: 0; }
+  html.embed .form-outer { padding-top: 0.5rem; }
+  /* 자동 높이 iframe 안에서는 화면 가운데가 보이지 않으므로 완료 창을 위쪽에 띄우고, 미리보기는 문서 흐름에 넣어 부모 페이지가 함께 길어지게 한다 */
+  html.embed .success-overlay { align-items: flex-start; padding-top: 72px; }
+  html.embed .preview-modal { position: absolute; top: 0; left: 0; right: 0; bottom: auto; min-height: 100%; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
@@ -1344,6 +1362,7 @@
       }
       finish();
       document.getElementById('success-overlay').classList.add('show');
+      embedPost('submitted');
     })();
   }
 
@@ -1645,11 +1664,13 @@
     document.getElementById('preview-doc').innerHTML = doc;
     document.getElementById('preview-modal').classList.add('show');
     document.body.style.overflow = 'hidden';
+    embedPost('preview-open');
   }
 
   function closePreview() {
     document.getElementById('preview-modal').classList.remove('show');
     document.body.style.overflow = '';
+    embedPost('preview-close');
   }
 
   function savePDF() {
@@ -1892,6 +1913,23 @@
     const rp = document.getElementById('rec-preview'); if(rp) rp.innerHTML = '<div class="photo-placeholder"><div class="photo-placeholder-text">클릭하여 추천서 업로드</div><div class="photo-placeholder-sub">JPG, PNG · 10MB 이하</div></div>';
     eduCount = 1; certCount = 1; compCount = 1; careerCount = 1;
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    embedPost('reset');
+  }
+
+  /* ── 홈페이지 삽입(embed) 모드: 부모 페이지(iframe을 넣은 쪽)에 높이와 상태를 postMessage로 알린다. 개인정보는 보내지 않는다 ── */
+  const EMBED = document.documentElement.classList.contains('embed') && window.self !== window.top;
+  function embedPost(event, extra) { if (!EMBED) return; try { window.parent.postMessage(Object.assign({ type: 'pafgym-recruit', event }, extra || {}), '*'); } catch (e) {} }
+  let embedLastH = 0, embedRaf = 0;
+  function embedHeight() {
+    if (!EMBED) return; cancelAnimationFrame(embedRaf);
+    embedRaf = requestAnimationFrame(() => { const h = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight); if (h !== embedLastH) { embedLastH = h; embedPost('height', { height: h }); } });
+  }
+  if (EMBED) {
+    new ResizeObserver(embedHeight).observe(document.body);
+    new MutationObserver(embedHeight).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'style'] });
+    window.addEventListener('load', embedHeight); window.addEventListener('resize', embedHeight);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(embedHeight);
+    embedHeight(); setTimeout(embedHeight, 800);
   }
 
 </script>
